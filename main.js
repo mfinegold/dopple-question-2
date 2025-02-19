@@ -21,10 +21,8 @@ document.body.appendChild(renderer.domElement);
 renderer.setClearColor(0x264258); 
 
 
-
 // orbit controls
 const orbit = new OrbitControls(camera, renderer.domElement);
-
 
 // post processing highlight effect - a white outline for selected mesh
 const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
