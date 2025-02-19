@@ -1,14 +1,4 @@
-/*import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
-*/
-
+// import modules
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.146.0/build/three.module.js';
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.146.0/examples/jsm/loaders/GLTFLoader.js';
 import { GLTFExporter } from 'https://cdn.jsdelivr.net/npm/three@0.146.0/examples/jsm/exporters/GLTFExporter.js';
@@ -19,9 +9,9 @@ import { OutlinePass } from 'https://cdn.jsdelivr.net/npm/three@0.146.0/examples
 import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.146.0/examples/jsm/postprocessing/ShaderPass.js';
 import { GammaCorrectionShader } from 'https://cdn.jsdelivr.net/npm/three@0.146.0/examples/jsm/shaders/GammaCorrectionShader.js';
 
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+// set up scene
+const scene = new Scene();
+const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
 camera.position.set(0, 2, 5);
 
 const renderer = new THREE.WebGLRenderer({antialias: true});
@@ -31,16 +21,6 @@ document.body.appendChild(renderer.domElement);
 renderer.setClearColor(0x264258); 
 
 
-// handle resizing of windows
-window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    // update post-processing effects as well
-    composer.setSize(window.innerWidth, window.innerHeight);
-    outlinePass.resolution.set(window.innerWidth, window.innerHeight);
-});
 
 // orbit controls
 const orbit = new OrbitControls(camera, renderer.domElement);
