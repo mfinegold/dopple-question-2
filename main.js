@@ -9,6 +9,8 @@ import { OutlinePass } from 'https://cdn.jsdelivr.net/npm/three@0.146.0/examples
 import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.146.0/examples/jsm/postprocessing/ShaderPass.js';
 import { GammaCorrectionShader } from 'https://cdn.jsdelivr.net/npm/three@0.146.0/examples/jsm/shaders/GammaCorrectionShader.js';
 
+const { Scene, PerspectiveCamera, WebGLRenderer } = THREE;
+
 // set up scene
 const scene = new Scene();
 const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
@@ -129,6 +131,7 @@ function updateGUIAfterLoad() {
     fileLabel.innerText = "You may select another GLB file:";
     statusMessage.classList.remove("hidden");
     exportGLBButton.classList.remove("hidden");
+    deselectMesh();
 }
 
 
@@ -146,7 +149,7 @@ rimLight.position.set(-5, 2, 2);
 scene.add(rimLight);
 
 
-// light helpers
+// light helpers - for debugging only
 // const keyLightHelper = new THREE.DirectionalLightHelper(keyLight, 1);
 // scene.add(keyLightHelper);
 // const rimLightHelper = new THREE.DirectionalLightHelper(rimLight, 1);
@@ -201,11 +204,17 @@ function updateVariantDropdown() {
     });
 
     variantPreview.classList.remove("hidden");  // show dropdown
+
+    // preview the first variant to start with
+    if (selectedMesh.userData.variants.length > 0) {
+        variantDropdown.selectedIndex = 0;
+        variantDropdown.dispatchEvent(new Event("change"));
+    }
+
 }
 
 
 function deselectMesh() {
-    if (!selectedMesh) return; // nothing to do if nothing selected
     outlinePass.selectedObjects = [];
     selectedMesh = null;
     console.log("Selection cleared");
@@ -372,13 +381,15 @@ function exportGLB() {
         console.log("GLTF:", gltf); // the json representation
 
         // for debugging purposes only: save json to file
-        const jsonString = JSON.stringify(gltf, null, 2); 
-        saveTextFile(jsonString, "debug_model.json"); 
+        //const jsonString = JSON.stringify(gltf, null, 2); 
+        // saveTextFile(jsonString, "debug_model.json"); 
 
         // save binary
         const glbBuffer = gltfToGlb(gltf); // convert to binary
-        saveArrayBuffer(glbBuffer, "updated_model.glb"); // download file
-        console.log("File sucessfully exported");
+        // prompt for filename before saving
+        const defaultFilename = "exported_model.glb";
+        const filename = prompt("Enter a file name:", defaultFilename) || defaultFilename;
+        saveArrayBuffer(glbBuffer, filename);
     }, options);
 }
     
